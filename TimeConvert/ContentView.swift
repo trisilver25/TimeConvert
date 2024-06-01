@@ -11,6 +11,7 @@ struct ContentView: View {
     @State private var timeAmount = 0.0
     @State private var fromTimeValue = "Seconds"
     @State private var toTimeValue = "Seconds"
+    @FocusState private var timeValueIsFocused: Bool
     
     let timeValues = ["Seconds", "Minutes", "Hours", "Days"]
     
@@ -66,6 +67,9 @@ struct ContentView: View {
                 }
                 Section("Enter Value") {
                     TextField("Time amount", value: $timeAmount, format: .number)
+                        .keyboardType(.decimalPad)
+                        .focused($timeValueIsFocused)
+                    
                     }
                 Section("Convert To"){
                     Picker("Convert To", selection: $toTimeValue) {
@@ -80,6 +84,13 @@ struct ContentView: View {
                 }
             }
             .navigationTitle("TimeConvert")
+            .toolbar {
+                if timeValueIsFocused {
+                    Button("Done") {
+                        timeValueIsFocused = false
+                    }
+                }
+            }
         }
     }
 }
